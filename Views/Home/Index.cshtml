@@ -1,0 +1,48 @@
+﻿@using cs_belt.Models
+@model UserViewModel
+
+
+<div class="form-section" style="border-right:2px solid gray">
+    <h1>Register</h1>
+    <form asp-action="register" method="post">
+        <label asp-for="regUser.FirstName" class="">First Name</label>
+        <input type="text" asp-for="regUser.FirstName" class="form-control"/> 
+        <span asp-validation-for="regUser.FirstName" style="color:red"></span><br>
+        <p></p>
+        <label asp-for="regUser.LastName" class="">LastName</label>
+        <input type="text" asp-for="regUser.LastName" class="form-control"/> 
+        <span asp-validation-for="regUser.LastName" style="color:red"></span><br>
+        <p></p>
+        <label asp-for="regUser.Email" class="">Email</label>
+        <input type="text" asp-for="regUser.Email" class="form-control"/> 
+        <span asp-validation-for="regUser.Email" style="color:red"></span><br>
+        <label asp-for="regUser.Password" class="control-label">Password</label>
+        <input type="password" asp-for="regUser.Password" class="form-control"/> 
+        <span asp-validation-for="regUser.Password" style="color:red"></span><br>
+        <p></p>
+        <label asp-for="regUser.Confirm" class="control-label">Confirm Password</label>
+        <input type="password" asp-for="regUser.Confirm" class="form-control"/> 
+        <span asp-validation-for="regUser.Confirm" style="color:red"></span><br>
+        <p></p>
+        <div style="width:99%;text-align:center">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </form>
+</div>
+
+<div class="form-section">
+    <form asp-action="login" method="post">
+        <h1>Login</h1>
+        <label asp-for="liUser.liEmail" class="">Email</label>
+        <input type="text" asp-for="liUser.liEmail" class="form-control"/> 
+        <span asp-validation-for="liUser.liEmail" style="color:red"></span><br>
+        <p></p>
+        <label asp-for="liUser.liPassword" class="control-label">Password</label>
+        <input type="password" asp-for="liUser.liPassword" class="form-control"/> 
+        <span asp-validation-for="liUser.liPassword" style="color:red"></span><br>
+        <p></p>
+        <div style="width:99%;text-align:center">
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </div>
+    </form>
+</div>
