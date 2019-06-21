@@ -9,7 +9,7 @@ namespace cs_belt.Models
             
         }
         public DbSet<User> Users { get; set; }
-        // public DbSet<Wedding> Weddings { get; set; }
-        // public DbSet<Response> Responses { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Response> Responses { get; set; }
     }
 }

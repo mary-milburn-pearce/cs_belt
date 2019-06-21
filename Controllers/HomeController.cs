@@ -50,7 +50,7 @@ namespace cs_belt.Controllers
                 HttpContext.Session.SetString("UserFirst", user.FirstName);
                 HttpContext.Session.SetString("UserLast", user.LastName);
                 HttpContext.Session.SetInt32("UserId", user.UserId);
-                return Redirect("belt");
+                return Redirect("dashboard");
             }
             else {
                 return View("Index", vm);
@@ -84,7 +84,7 @@ namespace cs_belt.Controllers
                 HttpContext.Session.SetString("UserFirst", userInDb.FirstName);
                 HttpContext.Session.SetString("UserLast", userInDb.LastName);
                 HttpContext.Session.SetInt32("UserId", userInDb.UserId);            
-                return Redirect("belt");
+                return Redirect("dashboard");
             }
             return View("Index", vm);
         }

@@ -1,0 +1,37 @@
+@using cs_belt.Models
+@model Event
+
+<div class="container">
+    <div id="new-event-header">    
+        <h1>Dojo Activity Center</h1>
+        <h4><a href="/dashboard" style="margin-left:10rem">Home</a></h4>
+        <h4><a href="/logout" style="margin-left:2rem;width:10rem">Logout</a></h4>
+    </div>
+    <hr><br>
+    <form asp-action="add_event" method="post">
+        <div class="form-section">
+            <label asp-for="Title" class="">Title</label>
+            <input type="text" asp-for="Title" class="form-control"/> 
+            <span asp-validation-for="Title"></span><br>
+            <label asp-for="EventDateTime" class="">Time</label>
+            <input type="time" asp-for="EventDateTime" class="form-control"/> 
+            <span asp-validation-for="EventDateTime"></span><br>
+            <label asp-for="EventDateTime" class="">Date</label>
+            <input type="date" asp-for="EventDateTime" class="form-control"/> 
+            <span asp-validation-for="EventDateTime"></span><br>
+            <label asp-for="Duration" class="">Duration</label>
+            <input type="number" asp-for="Duration" class="form-control"/>
+            <span asp-validation-for="Duration"></span><br>
+            <select asp-for="DurIncrement">
+                <option value="Hours">Hours</option>
+                <option value="Minutes">Minutes</option>
+                <option value="Days">Days</option>
+            </select>
+            <span asp-validation-for="DurIncrement"></span><br>
+            <label asp-for="Details" class="">Description</label>
+            <input type="text" asp-for="Details" class="form-control"/> 
+            <span asp-validation-for="Details"></span><br>
+            <button type="submit" class="btn btn-primary">Create Activity</button>
+        </div>
+    </form>
+</div>

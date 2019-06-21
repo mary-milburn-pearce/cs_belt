@@ -1,0 +1,23 @@
+@using cs_belt.Models
+@model Event
+
+
+<div id="detail-header">    
+    <h1>Dojo Activity Center</h1>
+    <h4><a href="/dashboard" style="margin-left:10rem">Home</a></h4>
+    <h4><a href="/logout" style="margin-left:2rem;width:10rem">Logout</a></h4>
+</div>
+<br>
+<h2>@Model.Title</h2>
+<input type="button" value="Join" >
+<h3>Event Coordinator:   @Model.Creator</h3>
+<h3>Description: </h3>
+<h3>Participants:</h3>
+<ul>
+@foreach (var guest in @Model.Guests)
+{
+    <li style="margin-left:3rem">@guest.Attendee.FirstName</li>
+}
+</ul>
+
+

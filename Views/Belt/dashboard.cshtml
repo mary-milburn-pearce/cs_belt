@@ -1,0 +1,45 @@
+﻿@using cs_belt.Models
+@model IEnumerable<ViewModel>
+
+<div id="db-header">
+  <h1>Dojo Activity Center</h1>
+  <h3 style="margin-left:10%"><a href="/logout">Log Out</a></h3>
+</div>
+
+<br>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Activity</th>
+      <th scope="col">Date and Time</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Event Coordinator</th>
+      <th scope="col">No. of Participants</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach (var act in @Model) {
+            <tr>
+                <td><a href="/detail/@act.activity.EventId">@act.activity.Title</a></td>
+                <td>@act.activity.EventDateTime.ToString("M/d @ h:mm ")</td>
+                <td>@act.activity.Duration @act.activity.DurIncrement</td>
+                <td>@act.activity.Creator.FirstName</td>
+                <td>@act.totalGuests</td>
+                @{
+                  if (@act.action == "Delete") {
+                    <td><a href="/delete/@act.activity.EventId">Delete</a></td>
+                    continue;
+                  } 
+                  else if (@act.action == "Join") {
+                    <td><a href="/accept/@act.activity.EventId">Join</a></td>
+                  } 
+                  else if (@act.action == "Leave") {
+                    <td><a href="/decline/@act.activity.EventId">Leave</a></td>
+                  }
+                }
+            </tr>
+      }
+  </tbody>
+</table>
+<a href="/new_event" class="btn btn-primary" style="margin:50px 20px;">Add New Activity</a>

@@ -34,8 +34,7 @@ namespace cs_belt.Models
 
         public DateTime CreatedAt {get;set;}
 
-        // public List<Message> Posts {get; set;}
-        // public List<Comment> Comments {get; set;}
+        public List<Response> Attending { get; set; }
     }
 
     public class LoginUser {
