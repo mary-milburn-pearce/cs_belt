@@ -30,7 +30,7 @@ namespace cs_belt.Controllers
             BeltViewModel vm = new BeltViewModel();
             vm.currUser = dbContext.Users.FirstOrDefault(u => u.UserId == currUserId);
             List<Event> events = dbContext.Events
-                .Where(d => d.EventDateTime > DateTime.Now)
+                .Where(d => DateTime.Compare(d.EventDateTime, DateTime.Now)>0)
                 .OrderBy(d => d.EventDateTime)
                 .Include(c => c.Creator)
                 .Include(g => g.Guests)
@@ -79,7 +79,7 @@ namespace cs_belt.Controllers
                 }
                 DateTime dtNow = DateTime.Now;
                 DateTime dtEvent = activity.newActivity.EventDateTime.Date + activity.time.TimeOfDay;
-                if (DateTime.Compare(dtNow, dtEvent)>1) {
+                if (DateTime.Compare(dtNow, dtEvent)>0) {
                     ModelState.AddModelError("time", "Activity must be in the future");
                     return View("new_event", activity);
                 }
