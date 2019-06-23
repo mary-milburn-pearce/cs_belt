@@ -1,3 +1,4 @@
 .vscode/
 Migrations/
 appsettings.json
+obj/MCD/Debug/*

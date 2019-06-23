@@ -23,7 +23,15 @@ namespace cs_belt.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<Event> events = dbContext.Events.OrderByDescending(d => d.EventDateTime)
+            int? currUserId = HttpContext.Session.GetInt32("UserId");
+            if (currUserId == null) {
+                return Redirect("Login");
+            }
+            BeltViewModel vm = new BeltViewModel();
+            vm.currUser = dbContext.Users.FirstOrDefault(u => u.UserId == currUserId);
+            List<Event> events = dbContext.Events
+                .Where(d => d.EventDateTime > DateTime.Now)
+                .OrderBy(d => d.EventDateTime)
                 .Include(c => c.Creator)
                 .Include(g => g.Guests)
                 .ThenInclude(a => a.Attendee).ToList();
@@ -46,26 +54,38 @@ namespace cs_belt.Controllers
                 }
                 allEvents.Add(newEv);
             }
-            return View("dashboard", allEvents);
+            vm.eventList = allEvents;
+            return View("dashboard", vm);
         }
         [Route("new_event")]
         [HttpGet]
         public IActionResult new_event()
         {
+            int? currUserId = HttpContext.Session.GetInt32("UserId");
+            if (currUserId == null) {
+                return Redirect("Login");
+            }
            return View("new_event");
         }
         [Route("add_event")]
         [HttpPost]
-        public IActionResult add_event(Event activity)
+        public IActionResult add_event(NewEvent activity)
         {
             if (ModelState.IsValid) {
                 int? currUserId = HttpContext.Session.GetInt32("UserId");
                 if (currUserId == null) {
-                    ModelState.AddModelError("Wedder1", "Please log in to add event");
-                    return Redirect("Login");
+                    ModelState.AddModelError("Title", "Please log in to add event");
+                    return View("new_event", activity);
                 }
-                activity.CreatorId = (int)currUserId;
-                dbContext.Events.Add(activity);
+                DateTime dtNow = DateTime.Now;
+                DateTime dtEvent = activity.newActivity.EventDateTime.Date + activity.time.TimeOfDay;
+                if (DateTime.Compare(dtNow, dtEvent)>1) {
+                    ModelState.AddModelError("time", "Activity must be in the future");
+                    return View("new_event", activity);
+                }
+                activity.newActivity.CreatorId = (int)currUserId;
+                activity.newActivity.EventDateTime = dtEvent;
+                dbContext.Events.Add(activity.newActivity);
                 dbContext.SaveChanges();
                 return Redirect("dashboard");
             } else
@@ -77,9 +97,14 @@ namespace cs_belt.Controllers
         [HttpGet]
         public IActionResult detail(int eventId)
         {
+            int? currUserId = HttpContext.Session.GetInt32("UserId");
+            if (currUserId == null) {
+                return Redirect("/Login");
+            }
             Event activity = dbContext.Events
                 .Include(response => response.Guests)
                 .ThenInclude(guest => guest.Attendee)
+                .Include(c => c.Creator)
                 .FirstOrDefault(d => d.EventId == eventId);
                 
             return View("detail", activity);

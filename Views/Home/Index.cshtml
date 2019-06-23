@@ -2,6 +2,9 @@
 @model UserViewModel
 
 
+<div class="page-header">
+    <h1>Welcome to the Dojo Activity Center</h1>
+</div>    
 <div class="form-section" style="border-right:2px solid gray">
     <h1>Register</h1>
     <form asp-action="register" method="post">
@@ -14,7 +17,7 @@
         <span asp-validation-for="regUser.LastName" style="color:red"></span><br>
         <p></p>
         <label asp-for="regUser.Email" class="">Email</label>
-        <input type="text" asp-for="regUser.Email" class="form-control"/> 
+        <input type="email" asp-for="regUser.Email" class="form-control"/> 
         <span asp-validation-for="regUser.Email" style="color:red"></span><br>
         <label asp-for="regUser.Password" class="control-label">Password</label>
         <input type="password" asp-for="regUser.Password" class="form-control"/> 

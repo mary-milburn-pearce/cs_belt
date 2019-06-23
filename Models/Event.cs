@@ -26,11 +26,17 @@ namespace cs_belt.Models
         [Required]
         public string DurIncrement {get; set;}
 
+        [Required]
         public string Details {get; set;}
 
         public DateTime CreatedAt {get;set;}
 
         public List<Response> Guests { get; set; }
+    }
 
+    public class NewEvent 
+    {
+        public Event newActivity {get; set;}
+        public DateTime time {get; set;}
     }
 }

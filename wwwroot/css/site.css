@@ -35,12 +35,19 @@ body {
         display: none;
     }
 }
-#wall-header h2, #wall-header h4 {
+.page-header h1, .page-header h4, .page-header h3 {
     display: inline-block;
     vertical-align: top;
 }
-#wall-header {
+.page-header {
     border-bottom: 2px solid gray;
+}
+.event-header * {
+    display: inline-block;
+    vertical-align: center;
+}
+.event-header {
+    width: 80%;
 }
 .form-section {
     width: 45%;
@@ -52,5 +59,15 @@ body {
     width: 85%;
     display: inline-block;
     vertical-align: top;
+    padding: 3%;
+}
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+.full-width {
+    width: 95%;
     padding: 3%;
 }
