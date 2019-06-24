@@ -30,29 +30,31 @@ namespace cs_belt.Controllers
             BeltViewModel vm = new BeltViewModel();
             vm.currUser = dbContext.Users.FirstOrDefault(u => u.UserId == currUserId);
             List<Event> events = dbContext.Events
-                .Where(d => DateTime.Compare(d.EventDateTime, DateTime.Now)>0)
                 .OrderBy(d => d.EventDateTime)
                 .Include(c => c.Creator)
                 .Include(g => g.Guests)
                 .ThenInclude(a => a.Attendee).ToList();
             List<ViewModel> allEvents = new List<ViewModel>();
             foreach (var ev in events) {
-                ViewModel newEv = new ViewModel();
-                newEv.activity = ev;
-                newEv.totalGuests = ev.Guests.Sum(g => g.NumGuests) + 1;
-                if (ev.CreatorId == HttpContext.Session.GetInt32("UserId")) {
-                    newEv.action = "Delete";
-                }
-                else {
-                    bool going = ev.Guests.Any(g => g.UserId == HttpContext.Session.GetInt32("UserId"));
-                    if (going) {
-                        newEv.action = "Leave";
+                DateTime dtUTC = ev.EventDateTime.ToUniversalTime();
+                if (DateTime.Compare(dtUTC, DateTime.UtcNow)>0) {
+                    ViewModel newEv = new ViewModel();
+                    newEv.activity = ev;
+                    newEv.totalGuests = ev.Guests.Sum(g => g.NumGuests) + 1;
+                    if (ev.CreatorId == HttpContext.Session.GetInt32("UserId")) {
+                        newEv.action = "Delete";
                     }
                     else {
-                        newEv.action = "Join";
+                        bool going = ev.Guests.Any(g => g.UserId == HttpContext.Session.GetInt32("UserId"));
+                        if (going) {
+                            newEv.action = "Leave";
+                        }
+                        else {
+                            newEv.action = "Join";
+                        }
                     }
+                    allEvents.Add(newEv);
                 }
-                allEvents.Add(newEv);
             }
             vm.eventList = allEvents;
             return View("dashboard", vm);
@@ -77,9 +79,9 @@ namespace cs_belt.Controllers
                     ModelState.AddModelError("Title", "Please log in to add event");
                     return View("new_event", activity);
                 }
-                DateTime dtNow = DateTime.Now;
+                DateTime dtNow = DateTime.Now.ToUniversalTime();
                 DateTime dtEvent = activity.newActivity.EventDateTime.Date + activity.time.TimeOfDay;
-                if (DateTime.Compare(dtNow, dtEvent)>0) {
+                if (DateTime.Compare(dtNow, dtEvent.ToUniversalTime())>0) {
                     ModelState.AddModelError("time", "Activity must be in the future");
                     return View("new_event", activity);
                 }
